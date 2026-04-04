@@ -1,0 +1,66 @@
+<script src="https://service.sheltermanager.com/asmservice?method=html_events&account=st1945"></script>
+
+<script>asm3_adoptable_filters = "age sex breed agegroup";</script> 
+
+<div id="asm3-adoptables"></div>
+<script>asm3_adoptable_sort = "-@DATEOFBIRTH";</script>
+<script>
+    asm3_adoptable_style = "animalviewcarouselOption1";
+    asm3_adoptable_fullsize_images = true;
+</script>
+
+<style>
+    /* 1. Force the list into a multi-column grid */
+    #asm3-adoptables {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px; /* Space between the cats */
+        padding: 20px;
+    }
+
+    /* 2. Style each individual cat "Item" */
+    /* This sets 4 per row on desktop (approx 22%) */
+    .asm3-adoptable-item {
+        width: 22%; 
+        min-width: 200px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* 3. Shrink the images to fit more on screen */
+    .asm3-adoptable-thumbnail { 
+        width: 100% !important; 
+        height: 180px !important; /* Fixed height to keep rows even */
+        object-fit: contain; /* Keeps the whole cat visible */
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    /* 4. Clean up the text labels */
+    .asm3-adoptable-name {
+        font-weight: bold;
+        font-size: 1.2rem;
+        display: block;
+        margin-top: 5px;
+        color: #333;
+    }
+
+    /* 5. Mobile Fix - 2 per row on phones */
+    @media (max-width: 600px) {
+        .asm3-adoptable-item {
+            width: 45%;
+            min-width: 150px;
+        }
+        .asm3-adoptable-thumbnail {
+            height: 140px !important;
+        }
+    }
+</style>
+
+<script src="https://service.sheltermanager.com/asmservice?method=animal_view_adoptable_js&account=st1945"></script>
