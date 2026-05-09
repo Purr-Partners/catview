@@ -1,71 +1,143 @@
+
+
 <head>
   <style>
-    body { background-color: #4BAC3F; }
+    body { background-color: #4BAC3F; margin: 0; padding: 0; }
   </style>
 </head>
 
-<script src="https://service.sheltermanager.com/asmservice?method=html_events&account=st1945"></script>
+<div class="sort-row">
+    <div class="sort-container">
+        <label for="sortOrder" style="color: white; font-weight: bold;">Sort By:</label>
+        <select id="sortOrder" onchange="applySort(this.value)">
+            <option value="@ANIMALNAME">Name (A-Z)</option>
+            <option value="-@DATEOFBIRTH">Age (Youngest first)</option>
+            <option value="@DATEOFBIRTH">Age (Oldest first)</option>
+            <option value="@ID">Arrival Date (Oldest first)</option>
+            <option value="-@ID">Arrival Date (Newest first)</option>
+        </select>
+    </div>
+</div>
 
-<script>asm3_adoptable_filters = "sex age breed agegroup";</script> 
-
-<div id="asm3-adoptables"></div>
-/* <script>asm3_adoptable_sort = "@DATEOFBIRTH";</script> */
 <script>
-    asm3_adoptable_style = "animalviewcarouselOption1";
-    asm3_adoptable_fullsize_images = true;
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('sort') || "@ANIMALNAME"; 
+
+    var asm3_adoptable_filters = "sex : age breed : agegroup";
+    var asm3_adoptable_sort = currentSort; 
+    var asm3_adoptable_style = "animalviewcarouselOption1";
+    var asm3_adoptable_fullsize_images = true;
+
+    function applySort(newSort) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort', newSort);
+        window.location.href = url.href; 
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('sortOrder').value = currentSort;
+    });
 </script>
 
+<div id="asm3-adoptables"></div>
+
+<script src="https://service.sheltermanager.com/asmservice?method=html_events&account=st1945"></script>
+<script src="https://service.sheltermanager.com/asmservice?method=animal_view_adoptable_js&account=st1945"></script>
+
 <style>
-    /* 1. Force the list into a multi-column grid */
+    /* Force the sort section to occupy the entire top row */
+    .sort-row {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .sort-container {
+        display: inline-block;
+    }
+
+    #sortOrder {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        background-color: white;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    /* Centering the Grid */
     #asm3-adoptables {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        gap: 30px; /* Space between the cats */
+        justify-content: center; 
+        align-items: stretch;    
+        gap: 20px;
         padding: 20px;
+        max-width: 1200px;       
+        margin: 0 auto;
+        /* This ensures no elements float next to the grid */
+        clear: both; 
     }
 
-    /* 2. Style each individual cat "Item" */
-    /* This sets 4 per row on desktop (approx 22%) */
+    /* Individual Card Styling */
     .asm3-adoptable-item {
         width: 22%; 
-        min-width: 200px;
+        min-width: 220px;
         background: White;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         text-align: center;
         margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 280px; 
+        padding-bottom: 15px;
+        overflow: hidden;
     }
 
-    /* 3. Shrink the images to fit more on screen */
     .asm3-adoptable-thumbnail { 
         width: 100% !important; 
-        height: 200px !important; /* Fixed height to keep rows even */
-        object-fit: contain; /* Keeps the whole cat visible */
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        margin-bottom: 10px;
+        height: 180px !important;
+        object-fit: contain;
+        background-color: White;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        margin-bottom: 8px;
     }
 
-    /* 4. Clean up the text labels */
     .asm3-adoptable-name {
         font-weight: bold;
-        font-size: 1.2rem;
-        display: block;
-        margin-top: 5px;
+        font-size: 1.1rem;
         color: #333;
+	background: #F5B935;
+        margin: 4px 0;
+        padding: 0 10px;
     }
 
-    /* 5. Mobile Fix - 2 per row on phones */
+    .asm3-adoptable-details {
+        display: block; 
+        font-size: 0.85rem;
+        color: #666;
+        padding: 0 12px;
+        line-height: 1.3;
+    }
+
+    .asm3-adoptable-details::first-line {
+        font-weight: bold;
+        color: #444;
+        line-height: 2.0; 
+    }
+
     @media (max-width: 600px) {
-        .asm3-adoptable-item {
-            width: 45%;
-            min-width: 150px;
+        .asm3-adoptable-item { 
+            width: 45%; 
+            min-width: 160px; 
+            min-height: 280px;
         }
-        .asm3-adoptable-thumbnail {
-            height: 160px !important;
+        .asm3-adoptable-thumbnail { 
+            height: 140px !important; 
         }
     }
 </style>
-
-<script src="https://service.sheltermanager.com/asmservice?method=animal_view_adoptable_js&account=st1945"></script>
